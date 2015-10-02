@@ -1,0 +1,30 @@
+diff --git a/GNUmakefile b/GNUmakefile
+index 6f84e28..a843443 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -23,7 +23,7 @@ endif
+ # We can augment CXXFLAGS if the user exports them in the shell, or if the user
+ #   omits them. However, if the user `make CXXFLAGS="-g1"`, then that's what
+ #   the user gets. Make does not override them, and does not honor our '+='.
+-CXXFLAGS ?= -DNDEBUG -g2 -O3
++CXXFLAGS ?= -DNDEBUG -O2 -fPIC -shared
+ 
+ # Add -DNDEBUG if nothing specified
+ ifeq ($(filter -DDEBUG -DNDEBUG,$(CXXFLAGS)),)
+diff --git a/GNUmakefile-cross b/GNUmakefile-cross
+index 60bc0f8..92c709b 100644
+--- a/GNUmakefile-cross
++++ b/GNUmakefile-cross
+@@ -11,6 +11,12 @@ MKDIR ?= mkdir
+ EGREP ?= egrep
+ UNAME ?= uname
+ 
++IS_ARM_EMBEDDED = 1
++ARM_ROOT = /home/peterwsh/work/project/buildroot-2012.05/output/host/usr/
++ARM_EMBEDDED_SYSROOT = $(ARM_ROOT)arm-unknown-linux-gnueabi/sysroot/
++CXX = $(ARM_ROOT)/bin/arm-none-linux-gnueabi-g++
++CXXFLAGS += -mcpu=arm926ej-s -msoft-float -mfloat-abi=soft -fPIC
++
+ # Default setting from environment. Disable verbose flag, add create flag
+ ifeq ($(findstring rv,$(ARFLAGS)),rv)
+ ARFLAGS = cr
